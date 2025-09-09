@@ -1,0 +1,315 @@
+openapi: 3.0.2
+info:
+  title: Inventory Management API
+  version: "1.0"
+servers:
+  - url: http://localhost:8081
+tags:
+  - name: Inventory
+    description: Inventory operations
+paths:
+  /api/inventory/:
+    get:
+      tags:
+        - Inventory
+      summary: Get all inventory items 
+      description: Get all the items in the inventory
+      operationId: getAllInventory
+      responses:
+        '200':
+          description: List of all inventory items 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemLocation'
+              examples:
+                success:
+                  value:
+                    - id: 1
+                      receiptKey: "RCP-001"
+                      itemCode: "LAP001"
+                      itemName: "Laptop"
+                      quantity: 10
+                      warehouseId: "ST001"
+                      zone: "A0"
+                      binLocation: "01"
+                      batchNumber: "BATCH01"
+                      expiryDate: "2025-12-31"
+                      placedDate: "2025-09-01T10:00:00"
+                      lastUpdated: "2025-09-01T10:00:00"
+                      updatedBy: "admin"
+        '404':
+          description: No inventory found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "No inventory found"
+  /api/inventory/{receiptKey}:
+    get:
+      tags:
+        - Inventory
+      summary: Get inventory items by receipt key
+      description: Get all the items in the inventory for a specific receipt key returns an array of item locations. if the receipt key is not found, an error message is returned.
+      operationId: getInventoryByReceipt
+      parameters:
+        - name: receiptKey
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "RCP-001"
+      responses:
+        '200':
+          description: List of inventory items for the given receipt key
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemLocation'
+              examples:
+                success:
+                  value:
+                    - id: 1
+                      receiptKey: "PCP-001"
+                      itemCode: "LAP001"
+                      itemName: "Laptop"
+                      quantity: 10
+                      warehouseId: "ST001"
+                      zone: "A0"
+                      binLocation: "01"
+                      batchNumber: "BATCH01"
+                      expiryDate: "2025-12-31"
+                      placedDate: "2025-09-01T10:00:00"
+                      lastUpdated: "2025-09-01T10:00:00"
+                      updatedBy: "admin"
+        '404':
+          description: No inventory found for the given receiptKey
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "No inventory found for the given receiptKey"
+  /api/inventory/moveItem:
+    post:
+      tags:
+        - Inventory
+      summary: Move an item to a new location
+      operationId: moveItemToNewLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveItemRequest'
+            examples:
+              move:
+                value:
+                  receiptKey: "RCP-001"
+                  itemCode: "LAP001"
+                  newZone: "B0"
+                  newBinLocation: "02"
+                  updatedBy: "admin"
+      responses:
+        '200':
+          description: Item moved successfully
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "Item moved successfully"
+        '404':
+          description: Item not found or move failed
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "Item not found or move failed"
+  /api/inventory/locationHistory/{receiptKey}:
+    get:
+      tags:
+        - Inventory
+      summary: Get location history by receipt key
+      description: Get all the location changed history records for a specific receipt key. It returns an array of location history records. If the receipt key is not found, an error message is returned.
+      operationId: getLocationHistoryByReceipt
+      parameters:
+        - name: receiptKey
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "RCP-001"
+      responses:
+        '200':
+          description: List of location changed history records for the given receipt key
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationHistory'
+              examples:
+                success:
+                  value:
+                    - id: 1
+                      receiptKey: "RCP-001"
+                      itemCode: "LAP001"
+                      oldZone: "A0"
+                      oldBinLocation: "01"
+                      newZone: "B0"
+                      newBinLocation: "02"
+                      updatedBy: "admin"
+                      updatedDate: "2025-09-02T12:00:00"
+        '404':
+          description: No location history found for the given receiptKey
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "No location history found for the given receiptKey"
+  /api/inventory/locationHistory/{receiptKey}/{itemCode}:
+    get:
+      tags:
+        - Inventory
+      summary: Get location history by receipt key and item code
+      description: Get all the location changed history records for a specific receipt key and item code. It returns an array of location history records. If the receipt key and item code are not found, an error message is returned.
+      operationId: getLocationHistoryByItem
+      parameters:
+        - name: receiptKey
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "RCP-001"
+        - name: itemCode
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "LAP001"
+      responses:
+        '200':
+          description: List of location changed history records for the given receipt key and item code
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationHistory'
+              examples:
+                success:
+                  value:
+                    - id: 1
+                      receiptKey: "RCP-001"
+                      itemCode: "LAP001"
+                      oldZone: "A0"
+                      oldBinLocation: "01"
+                      newZone: "B0"
+                      newBinLocation: "02"
+                      updatedBy: "admin"
+                      updatedDate: "2025-09-02T12:00:00"
+        '404':
+          description: No location history found for the given receiptKey and itemCode
+          content:
+            application/json:
+              schema:
+                type: string
+              example: "No location history found for the given receiptKey and itemCode"
+components:
+  schemas:
+    ItemLocation:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        receiptKey:
+          type: string
+          example: "RCP-001"
+        itemCode:
+          type: string
+          example: "LAP001"
+        itemName:
+          type: string
+          example: "Laptop"
+        quantity:
+          type: integer
+          example: 10
+        warehouseId:
+          type: string
+          example: "ST001"
+        zone:
+          type: string
+          example: "A0"
+        binLocation:
+          type: string
+          example: "01"
+        batchNumber:
+          type: string
+          example: "BATCH01"
+        expiryDate:
+          type: string
+          example: "2025-12-31"
+        placedDate:
+          type: string
+          format: date-time
+          example: "2025-09-01T10:00:00"
+        lastUpdated:
+          type: string
+          format: date-time
+          example: "2025-09-01T10:00:00"
+        updatedBy:
+          type: string
+          example: "admin"
+    LocationHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        receiptKey:
+          type: string
+          example: "RCP-001"
+        itemCode:
+          type: string
+          example: "LAP001"
+        oldZone:
+          type: string
+          example: "A0"
+        oldBinLocation:
+          type: string
+          example: "01"
+        newZone:
+          type: string
+          example: "B0"
+        newBinLocation:
+          type: string
+          example: "02"
+        updatedBy:
+          type: string
+          example: "admin"
+        updatedDate:
+          type: string
+          format: date-time
+          example: "2025-09-02T12:00:00"
+    MoveItemRequest:
+      type: object
+      properties:
+        receiptKey:
+          type: string
+          example: "RCP-001"
+        itemCode:
+          type: string
+          example: "LAP001"
+        newZone:
+          type: string
+          example: "B0"
+        newBinLocation:
+          type: string
+          example: "02"
+        updatedBy:
+          type: string
+          example: "admin"

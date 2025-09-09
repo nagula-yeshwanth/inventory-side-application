@@ -1,0 +1,68 @@
+// warehouse.proto
+syntax = "proto3";
+
+option java_package = "com.example.inventory";
+option java_multiple_files = true;
+
+service InventoryService {
+  rpc UpdateItemLocation (ItemLocationUpdateRequest) returns (ItemLocationUpdateResponse);
+  rpc GetItemLocationsByReceipt (LocationQueryRequest) returns (LocationQueryResponse);
+  rpc MoveItemToNewLocation (ItemLocationMoveRequest) returns (ItemLocationMoveResponse);
+}
+
+message ItemLocationUpdateRequest {
+  string receiptKey = 1;
+  repeated ItemLocationUpdate items = 2;
+  string warehouseId = 3;
+  string updatedBy = 4;
+}
+
+message ItemLocationUpdate {
+  string itemCode = 1;
+  string itemName = 2;
+  int32 quantity = 3;
+  string zone = 4;
+  string binLocation = 5;
+  string batchNumber = 6;
+  string expiryDate = 7;
+}
+
+message ItemLocationUpdateResponse {
+  bool success = 1;
+  string message = 2;
+  repeated string updatedItems = 3;
+}
+
+message LocationQueryRequest {
+  string receiptKey = 1;
+}
+
+message LocationQueryResponse {
+  bool found = 1;
+  string receiptKey = 2;
+  repeated ItemLocationInfo items = 3;
+}
+
+message ItemLocationInfo {
+  string itemCode = 1;
+  string itemName = 2;
+  int32 quantity = 3;
+  string zone = 4;
+  string binLocation = 5;
+  string batchNumber = 6;
+  string expiryDate = 7;
+  string placedDate = 8;
+}
+
+message ItemLocationMoveRequest {
+  string receiptKey = 1;
+  string itemCode = 2;
+  string newZone = 3;
+  string newBinLocation = 4;
+  string updatedBy = 5;
+}
+
+message ItemLocationMoveResponse {
+  bool success = 1;
+  string message = 2;
+}
