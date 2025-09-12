@@ -5,6 +5,7 @@ import com.example.inventory.model.ItemLocation;
 import com.example.inventory.model.LocationHistory;
 import com.example.inventory.repository.ItemLocationRepository;
 import com.example.inventory.repository.LocationHistoryRepository;
+import com.example.receive.model.Inventory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,27 @@ public class InventoryManagementService {
             updatedItems.add(item.getItemCode());
         }
         return updatedItems;
+    }
+
+    @Transactional
+    public String updateItemLocations(Inventory item) {
+
+        ItemLocation itemLocation = new ItemLocation();
+        itemLocation.setReceiptKey(item.getReceiptKey());
+        itemLocation.setItemCode(item.getItemCode());
+        itemLocation.setItemName(item.getItemName());
+        itemLocation.setQuantity(item.getQuantity());
+        itemLocation.setWarehouseId(item.getWarehouseId());
+        itemLocation.setZone(item.getZone());
+        itemLocation.setBinLocation(item.getBinLocation());
+        itemLocation.setBatchNumber(item.getBatchNumber());
+        itemLocation.setExpiryDate(item.getExpiryDate());
+        itemLocation.setPlacedDate(LocalDateTime.now());
+        itemLocation.setLastUpdated(LocalDateTime.now());
+        itemLocation.setUpdatedBy(item.getUpdatedBy());
+
+        itemLocationRepository.save(itemLocation);
+        return "Item location updated for item: " + item.getItemCode();
     }
 
     public List<ItemLocation> getItemLocationsByReceipt(String receiptKey) {
