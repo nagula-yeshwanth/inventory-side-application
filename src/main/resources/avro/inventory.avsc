@@ -1,0 +1,20 @@
+{
+  "type": "record",
+  "name": "Inventory",
+  "namespace": "com.example.receive.model",
+  "fields": [
+    { "name": "receiptKey", "type": ["null", "string"], "default": null },
+    { "name": "warehouseId", "type": ["null", "string"], "default": null },
+    { "name": "itemCode", "type": ["null", "string"], "default": null },
+    { "name": "itemName", "type": ["null", "string"], "default": null },
+    { "name": "quantity", "type": ["null", "int"], "default": null },
+    { "name": "zone", "type": ["null", "string"], "default": null },
+    { "name": "newZone", "type": ["null", "string"], "default": null },
+    { "name": "binLocation", "type": ["null", "string"], "default": null },
+    { "name": "newBinLocation", "type": ["null", "string"], "default": null },
+    { "name": "batchNumber", "type": ["null", "string"], "default": null },
+    { "name": "expiryDate", "type": ["null", "string"], "default": null },
+    { "name": "updatedBy", "type": ["null", "string"], "default": null }
+  ]
+}
+
