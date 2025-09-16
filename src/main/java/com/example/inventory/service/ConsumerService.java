@@ -12,6 +12,9 @@ import com.example.receive.model.Inventory;
 @Service
 public class ConsumerService {
 
+    @Autowired
+    KafkaResponsePublisher kafkaResponsePublisher;
+
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
@@ -30,6 +33,8 @@ public class ConsumerService {
         Inventory inventory = record.value();
         System.out.println("Received inventory message: " + inventory);
         String res = inventoryManagementService.updateItemLocations(inventory);
+
+        kafkaResponsePublisher.sendMessage("Successfully updated inventory");
 
         if(res != null) {
             System.out.println("Inventory updated successfully: " + res);
