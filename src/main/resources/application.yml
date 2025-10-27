@@ -12,11 +12,16 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none # Use 'none' when using Liquibase to manage schema
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.yml
+
   kafka:
     producer:
       bootstrap-servers: localhost:9092

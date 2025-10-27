@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-item-locations-table
+      author: NYE018
+      preconditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: item_locations
+      changes:
+        - createTable:
+            tableName: item_locations
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: receipt_key
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: item_code
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: item_name
+                  type: VARCHAR(255)
+              - column:
+                  name: quantity
+                  type: INTEGER
+              - column:
+                  name: warehouse_id
+                  type: VARCHAR(255)
+              - column:
+                  name: zone
+                  type: VARCHAR(255)
+              - column:
+                  name: bin_location
+                  type: VARCHAR(255)
+              - column:
+                  name: batch_number
+                  type: VARCHAR(255)
+              - column:
+                  name: expiry_date
+                  type: VARCHAR(255)
+              - column:
+                  name: placed_date
+                  type: DATETIME
+              - column:
+                  name: last_updated
+                  type: DATETIME
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+      rollback:
+        - dropTable:
+            tableName: item_locations
+

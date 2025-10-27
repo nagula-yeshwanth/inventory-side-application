@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.5.5'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'com.google.protobuf' version '0.9.4'
+	id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'com.example'
@@ -50,6 +51,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.grpc:spring-grpc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.liquibase:liquibase-core'
+
+	liquibaseRuntime 'org.liquibase:liquibase-core'
+	liquibaseRuntime 'com.microsoft.sqlserver:mssql-jdbc'
+	// The Liquibase CLI uses picocli; include it on the liquibaseRuntime classpath to avoid NoClassDefFoundError
+	liquibaseRuntime 'info.picocli:picocli:4.7.0'
 }
 
 dependencyManagement {

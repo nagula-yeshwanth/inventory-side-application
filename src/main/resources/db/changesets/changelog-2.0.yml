@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-location-history-table
+      author: NYE018
+      preconditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: location_history
+      changes:
+        - createTable:
+            tableName: location_history
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: receipt_key
+                  type: VARCHAR(255)
+              - column:
+                  name: item_code
+                  type: VARCHAR(255)
+              - column:
+                  name: old_zone
+                  type: VARCHAR(255)
+              - column:
+                  name: old_bin_location
+                  type: VARCHAR(255)
+              - column:
+                  name: new_zone
+                  type: VARCHAR(255)
+              - column:
+                  name: new_bin_location
+                  type: VARCHAR(255)
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+              - column:
+                  name: updated_date
+                  type: DATETIME
+      rollback:
+        - dropTable:
+            tableName: location_history
+

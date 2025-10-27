@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: ../changesets/changelog-1.0.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ../changesets/changelog-2.0.yml
+      relativeToChangelogFile: true
